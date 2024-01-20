@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"text/template"
 )
 
 func ReaderToStruct(r *http.Request, v interface{}) error {
@@ -45,5 +46,26 @@ func RenderJSON(w http.ResponseWriter, v interface{}, statusCode int) {
 		}
 	case nil:
 	}
+}
 
+func RenderTemplate(w http.ResponseWriter, templateName string, data interface{}) error {
+	tmpl, err := template.ParseFiles("templates/" + templateName)
+	if err != nil {
+		return err
+	}
+	switch data.(type) {
+	case error:
+		_ = tmpl.Execute(w, struct {
+			Error string
+		}{data.(error).Error()})
+	default:
+		err = tmpl.Execute(w, data)
+		if err != nil {
+			_ = tmpl.Execute(w, struct {
+				Error string
+			}{err.Error()})
+		}
+	}
+
+	return nil
 }

@@ -11,6 +11,7 @@ import (
 
 func NewRouter(cfg *config.Config) *chi.Mux {
 	r := chi.NewRouter()
+
 	r.Use(middleware.RequestID)
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
@@ -25,6 +26,10 @@ func NewRouter(cfg *config.Config) *chi.Mux {
 		MaxAge:           300,
 	}))
 
+	// Add Static File Server
+	fileServer := http.FileServer(http.Dir("./static/"))
+	r.Handle("/static/*", http.StripPrefix("/static/", fileServer))
+
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		_, err := w.Write([]byte("welcome"))
 		if err != nil {
@@ -33,7 +38,7 @@ func NewRouter(cfg *config.Config) *chi.Mux {
 	})
 
 	// Register routes
-	r.Route("/user", user.Routes)
+	user.Routes(r, cfg)
 
 	return r
 }

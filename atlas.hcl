@@ -9,7 +9,7 @@ data "external_schema" "gorm" {
 
 env "gorm" {
   src = data.external_schema.gorm.url
-  dev = "sqlite://dev?mode=memory"
+  dev = "sqlite3://bin?mode=memory"
   url = "sqlite3://bin/data.db"
   migration {
     dir = "file://migrations"

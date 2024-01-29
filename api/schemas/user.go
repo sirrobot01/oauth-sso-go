@@ -1,6 +1,6 @@
-package user
+package schemas
 
-import "github.com/sirrobot01/oauth-sso/internal/common"
+import "github.com/sirrobot01/oauth-sso/api/common"
 
 type LoginInSchema struct {
 	Username string `json:"username"`

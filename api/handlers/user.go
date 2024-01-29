@@ -1,8 +1,9 @@
-package user
+package handlers
 
 import (
+	"github.com/sirrobot01/oauth-sso/api/common"
+	"github.com/sirrobot01/oauth-sso/api/schemas"
 	"github.com/sirrobot01/oauth-sso/config"
-	"github.com/sirrobot01/oauth-sso/internal/common"
 	"net/http"
 )
 
@@ -28,7 +29,7 @@ func RegisterHandler(cfg *config.Config) http.HandlerFunc {
 			username := r.Form.Get("username")
 			password := r.Form.Get("password")
 			passwordConfirm := r.Form.Get("confirm_password")
-			data := RegisterInSchema{
+			data := schemas.RegisterInSchema{
 				Username:        username,
 				Password:        password,
 				ConfirmPassword: passwordConfirm,
@@ -62,7 +63,7 @@ func LoginHandler(cfg *config.Config) http.HandlerFunc {
 			}
 			username := r.Form.Get("username")
 			password := r.Form.Get("password")
-			data := LoginInSchema{
+			data := schemas.LoginInSchema{
 				Username: username,
 				Password: password,
 			}

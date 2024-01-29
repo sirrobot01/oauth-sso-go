@@ -1,4 +1,4 @@
-migrations:
+createmigrations:
 	@echo "Creating migrations"
 	@atlas migrate diff --env gorm
 	@echo "Migrations creation done"

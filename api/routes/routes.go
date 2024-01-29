@@ -5,7 +5,6 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
 	"github.com/sirrobot01/oauth-sso/config"
-	"github.com/sirrobot01/oauth-sso/internal/apps/user"
 	"net/http"
 )
 
@@ -38,7 +37,7 @@ func NewRouter(cfg *config.Config) *chi.Mux {
 	})
 
 	// Register routes
-	user.Routes(r, cfg)
+	UserRoutes(r, cfg)
 
 	return r
 }

@@ -4,13 +4,13 @@ import (
 	_ "ariga.io/atlas-go-sdk/recordriver"
 	"ariga.io/atlas-provider-gorm/gormschema"
 	"fmt"
-	"github.com/sirrobot01/oauth-sso/internal/models"
+	"github.com/sirrobot01/oauth-sso/api/models"
 	"io"
 	"os"
 )
 
 func main() {
-	stmts, err := gormschema.New("sqlite").Load(&models.User{})
+	stmts, err := gormschema.New("sqlite").Load(models.Models...)
 	if err != nil {
 		_, err := fmt.Fprintf(os.Stderr, "failed to load gorm schema: %v\n", err)
 		if err != nil {

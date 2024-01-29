@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
+	"github.com/sirrobot01/oauth-sso/api/routes"
 	"github.com/sirrobot01/oauth-sso/config"
-	"github.com/sirrobot01/oauth-sso/internal/routes"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"net/http"

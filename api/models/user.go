@@ -15,4 +15,7 @@ type User struct {
 	IsActive  bool           `json:"is_active" gorm:"default:true"`
 	IsAdmin   bool           `json:"is_admin" gorm:"default:false"`
 	Metadata  string         `json:"metadata"`
+
+	// FKs
+	Apps []App `json:"apps" gorm:"many2many:apps;"`
 }

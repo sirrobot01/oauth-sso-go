@@ -24,7 +24,7 @@ func main() {
 	cfg := config.New(db)
 	router := routes.NewRouter(cfg)
 
-	fmt.Println("Running server on " + cfg.Host + ":" + cfg.Port)
+	fmt.Println("Running server on " + "http://" + cfg.Host + ":" + cfg.Port)
 	err := http.ListenAndServe(cfg.Host+":"+cfg.Port, router)
 	if err != nil {
 		return

@@ -17,4 +17,7 @@ type App struct {
 	ClientSecret string         `json:"client_secret"`
 	Scopes       string         `json:"scopes"` // comma separated
 	Metadata     string         `json:"metadata"`
+
+	// FKs
+	UserID uint `json:"user_id"`
 }

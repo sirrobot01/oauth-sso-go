@@ -5,8 +5,10 @@ go 1.21.5
 require (
 	ariga.io/atlas-go-sdk v0.2.3
 	ariga.io/atlas-provider-gorm v0.2.0
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-chi/chi/v5 v5.0.11
 	github.com/go-chi/cors v1.2.1
+	golang.org/x/crypto v0.8.0
 	gorm.io/driver/sqlite v1.5.2
 	gorm.io/gorm v1.25.5
 )
@@ -19,7 +21,6 @@ require (
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/mattn/go-sqlite3 v1.14.17 // indirect
-	golang.org/x/crypto v0.8.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
 	gorm.io/driver/mysql v1.5.1 // indirect
 	gorm.io/driver/postgres v1.5.2 // indirect

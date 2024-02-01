@@ -6,6 +6,7 @@ import (
 	"github.com/go-chi/cors"
 	"github.com/sirrobot01/oauth-sso/api/common"
 	"github.com/sirrobot01/oauth-sso/api/middlewares"
+	"github.com/sirrobot01/oauth-sso/api/models"
 	"github.com/sirrobot01/oauth-sso/config"
 	"net/http"
 )
@@ -44,6 +45,13 @@ func NewRouter(cfg *config.Config) *chi.Mux {
 	})
 
 	authRouter.Get(common.GetPath(":welcome"), func(w http.ResponseWriter, r *http.Request) {
+		ctx := r.Context()
+		_, ok := ctx.Value("user").(*models.User)
+		if !ok {
+			// User not found
+			// pass for now
+			println("no user")
+		}
 		_, err := w.Write([]byte("This is the special route with custom middleware"))
 		if err != nil {
 			return

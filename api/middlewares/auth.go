@@ -1,8 +1,10 @@
 package middlewares
 
 import (
+	"context"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/sirrobot01/oauth-sso/api/common"
+	"github.com/sirrobot01/oauth-sso/api/models"
 	"github.com/sirrobot01/oauth-sso/config"
 	"net/http"
 )
@@ -16,7 +18,7 @@ func AuthMiddleware(cfg *config.Config) func(handler http.Handler) http.Handler 
 				return
 			}
 			token, err := jwt.ParseWithClaims(tokenCookie.Value, &common.JwtClaims{}, func(token *jwt.Token) (interface{}, error) {
-				return []byte("SECRET"), nil
+				return []byte(config.GetEnv("SECRET_KEY", "secret")), nil
 			})
 			if err != nil {
 				AuthFailed(w, r)
@@ -36,8 +38,19 @@ func AuthMiddleware(cfg *config.Config) func(handler http.Handler) http.Handler 
 			//	AuthFailed(w, r)
 			//	return
 			//}
+			ctx := r.Context()
+			_, ok = ctx.Value("user").(*models.User)
+			if !ok {
+				// cached user not in context
+				user, err := cfg.DB.GetUserById(claims.UserID)
+				if err != nil {
+					AuthFailed(w, r)
+					return
+				}
+				ctx = context.WithValue(r.Context(), "user", user)
 
-			next.ServeHTTP(w, r)
+			}
+			next.ServeHTTP(w, r.WithContext(ctx))
 		})
 
 	}

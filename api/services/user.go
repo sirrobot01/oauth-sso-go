@@ -4,7 +4,6 @@ import (
 	"github.com/sirrobot01/oauth-sso/api/common"
 	"github.com/sirrobot01/oauth-sso/api/models"
 	"github.com/sirrobot01/oauth-sso/api/schemas"
-	"github.com/sirrobot01/oauth-sso/api/storage/db"
 )
 
 func (s *Service) RegisterUser(user *schemas.RegisterInSchema) (*models.User, error) {
@@ -16,7 +15,7 @@ func (s *Service) RegisterUser(user *schemas.RegisterInSchema) (*models.User, er
 		Username: user.Username,
 		Password: password,
 	}
-	err = db.CreateUser(s.cfg.DB, u)
+	err = s.cfg.DB.CreateUser(u)
 	if err != nil {
 		return nil, err
 	}
@@ -24,14 +23,15 @@ func (s *Service) RegisterUser(user *schemas.RegisterInSchema) (*models.User, er
 }
 
 func (s *Service) LoginUser(u *schemas.LoginInSchema) (*models.User, error) {
-	user, err := db.GetUserByUsername(s.cfg.DB, u.Username)
+	user, err := s.cfg.DB.GetUserByQuery("username = ?", u.Username)
 	if err != nil {
 		return nil, err
 	}
+	//user, ok := obj.(*models.User)
 	if !common.CheckPassword(u.Password, user.Password) {
 		return nil, &common.ValidationError{
 			Message: "invalid password",
 		}
 	}
-	return &user, nil
+	return user, nil
 }

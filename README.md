@@ -18,5 +18,5 @@ make migrate
 #### Make migrations
 
 ```bash
-make makemigrations
+make createemigrations
 ```

@@ -2,6 +2,7 @@ package common
 
 import (
 	"github.com/dgrijalva/jwt-go"
+	"github.com/sirrobot01/oauth-sso/config"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"time"
@@ -46,12 +47,12 @@ func GenerateToken(userId string, username string, admin bool) (string, error) {
 		UserID:   userId,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
-			Issuer:    "booked",
+			Issuer:    "oauth2",
 			Subject:   userId,
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString([]byte("SECRET"))
+	return token.SignedString([]byte(config.GetEnv("SECRET_KEY", "secret")))
 }
 
 func GetCookie(r *http.Request, name string) (*http.Cookie, error) {

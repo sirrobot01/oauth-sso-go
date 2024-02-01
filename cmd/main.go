@@ -4,24 +4,12 @@ import (
 	"fmt"
 	"github.com/sirrobot01/oauth-sso/api/routes"
 	"github.com/sirrobot01/oauth-sso/config"
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
 	"net/http"
 )
 
-func InitDB() *gorm.DB {
-	fmt.Println("Connecting to database...")
-	db, err := gorm.Open(sqlite.Open("./bin/data.db"), &gorm.Config{})
-	if err != nil {
-		panic("failed to connect database")
-	}
-
-	return db
-}
-
 func main() {
-	db := InitDB()
-	cfg := config.New(db)
+
+	cfg := config.InitConfig()
 	router := routes.NewRouter(cfg)
 
 	fmt.Println("Running server on " + "http://" + cfg.Host + ":" + cfg.Port)

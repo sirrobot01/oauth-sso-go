@@ -12,4 +12,6 @@ start:
 	@which CompileDaemon > /dev/null 2>&1 && CompileDaemon --build="go build -o ./bin/app ./cmd/" --command=./bin/app || (echo "Using go run" && go run ./cmd/main.go)
 	
 test:
+	# Set env to test
+	@export ENV=test
 	@go test -v ./...

@@ -6,8 +6,14 @@ var PATHS = make(map[string]map[string]string)
 
 func init() {
 	PATHS["user"] = map[string]string{
-		"login":    "/user/login",
-		"register": "/user/register",
+		"login":    "/user/login/",
+		"register": "/user/register/",
+	}
+
+	PATHS["app"] = map[string]string{
+		"new":  "/app/new/",
+		"edit": "/app/{id}/edit/",
+		"list": "/app/",
 	}
 
 	PATHS[""] = map[string]string{
@@ -16,10 +22,10 @@ func init() {
 	}
 
 	PATHS["auth"] = map[string]string{
-		"auth":    "/auth/authorize",
-		"token":   "/auth/token",
-		"refresh": "/auth/refresh",
-		"revoke":  "/auth/revoke",
+		"auth":    "/auth/authorize/",
+		"token":   "/auth/token/",
+		"refresh": "/auth/refresh/",
+		"revoke":  "/auth/revoke/",
 	}
 }
 

@@ -66,6 +66,7 @@ func RegisterHandler(cfg *config.Config) http.HandlerFunc {
 		if err != nil {
 			return
 		}
+		return
 	}
 }
 

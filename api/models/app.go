@@ -13,7 +13,7 @@ type App struct {
 	Name         string         `json:"name" gorm:"unique"`
 	IsActive     bool           `json:"is_active" gorm:"default:true"`
 	RedirectURIs string         `json:"redirect_uris"` // comma separated
-	ClientKey    string         `json:"client_key"`
+	ClientKey    string         `json:"client_key" gorm:"unique"`
 	ClientSecret string         `json:"client_secret"`
 	Scopes       string         `json:"scopes"` // comma separated
 	Metadata     string         `json:"metadata"`

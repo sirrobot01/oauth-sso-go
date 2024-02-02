@@ -32,6 +32,12 @@ func NewRouter(cfg *config.Config) *chi.Mux {
 		r.Use(middlewares.AuthMiddleware(cfg))
 	})
 
+	routers := &common.Routers{
+		AllowAny:   r,
+		AllowAuth:  authRouter,
+		AllowAdmin: authRouter,
+	}
+
 	// Add Static File Server
 	fileServer := http.FileServer(http.Dir("./static/"))
 	r.Handle("/static/*", http.StripPrefix("/static/", fileServer))
@@ -60,7 +66,8 @@ func NewRouter(cfg *config.Config) *chi.Mux {
 	})
 
 	// Register routes
-	UserRoutes(r, authRouter, cfg)
+	UserRoutes(routers, cfg)
+	AppRoutes(routers, cfg)
 
 	return r
 }

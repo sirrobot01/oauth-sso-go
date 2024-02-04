@@ -17,14 +17,14 @@ func AuthMiddleware(cfg *config.Config) func(handler http.Handler) http.Handler 
 				AuthFailed(w, r)
 				return
 			}
-			token, err := jwt.ParseWithClaims(tokenCookie.Value, &common.JwtClaims{}, func(token *jwt.Token) (interface{}, error) {
+			token, err := jwt.ParseWithClaims(tokenCookie.Value, &common.UserJwtClaims{}, func(token *jwt.Token) (interface{}, error) {
 				return []byte(config.GetEnv("SECRET_KEY", "secret")), nil
 			})
 			if err != nil {
 				AuthFailed(w, r)
 				return
 			}
-			claims, ok := token.Claims.(*common.JwtClaims)
+			claims, ok := token.Claims.(*common.UserJwtClaims)
 			if !ok {
 				AuthFailed(w, r)
 				return

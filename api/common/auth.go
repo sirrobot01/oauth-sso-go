@@ -8,10 +8,16 @@ import (
 	"time"
 )
 
-type JwtClaims struct {
+type UserJwtClaims struct {
 	Username string `json:"username"`
 	UserID   string `json:"user_id"`
 	Admin    bool   `json:"admin"`
+	jwt.StandardClaims
+}
+
+type AppJwtClaims struct {
+	AppName string `json:"app_name"`
+	AppID   string `json:"app_id"`
 	jwt.StandardClaims
 }
 
@@ -39,9 +45,14 @@ func SetCookie(w http.ResponseWriter, name string, value string, expires time.Ti
 	http.SetCookie(w, &cookie)
 }
 
-func GenerateToken(userId string, username string, admin bool) (string, error) {
+func GenerateToken(claims jwt.Claims) (string, error) {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString([]byte(config.GetEnv("SECRET_KEY", "secret")))
+}
+
+func GenerateUserToken(userId string, username string, admin bool) (string, error) {
 	expirationTime := time.Now().Add(100 * time.Minute)
-	claims := JwtClaims{
+	claims := UserJwtClaims{
 		Username: username,
 		Admin:    admin,
 		UserID:   userId,
@@ -51,8 +62,21 @@ func GenerateToken(userId string, username string, admin bool) (string, error) {
 			Subject:   userId,
 		},
 	}
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString([]byte(config.GetEnv("SECRET_KEY", "secret")))
+	return GenerateToken(claims)
+}
+
+func GenerateAppToken(appId string, appName string) (string, error) {
+	expirationTime := time.Now().AddDate(1, 0, 0)
+	claims := AppJwtClaims{
+		AppName: appName,
+		AppID:   appId,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: expirationTime.Unix(),
+			Issuer:    "oauth2",
+			Subject:   appId,
+		},
+	}
+	return GenerateToken(claims)
 }
 
 func GetCookie(r *http.Request, name string) (*http.Cookie, error) {

@@ -68,6 +68,7 @@ func NewRouter(cfg *config.Config) *chi.Mux {
 	// Register routes
 	UserRoutes(routers, cfg)
 	AppRoutes(routers, cfg)
+	OauthRoutes(routers, cfg)
 
 	return r
 }

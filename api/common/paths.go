@@ -21,11 +21,11 @@ func init() {
 		"welcome": "/welcome",
 	}
 
-	PATHS["auth"] = map[string]string{
-		"auth":    "/auth/authorize/",
-		"token":   "/auth/token/",
-		"refresh": "/auth/refresh/",
-		"revoke":  "/auth/revoke/",
+	PATHS["oauth"] = map[string]string{
+		"authorize": "/oauth/authorize/",
+		"token":     "/oauth/token/",
+		"refresh":   "/oauth/refresh/",
+		"revoke":    "/oauth/revoke/",
 	}
 }
 

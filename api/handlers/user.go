@@ -107,10 +107,15 @@ func LoginHandler(cfg *config.Config) http.HandlerFunc {
 				return
 			}
 			//Set the cookie
-			token, _ := common.GenerateToken(strconv.Itoa(int(user.ID)), user.Username, user.IsAdmin)
+			token, _ := common.GenerateUserToken(strconv.Itoa(int(user.ID)), user.Username, user.IsAdmin)
 			expires := time.Now().Add(time.Minute * 100)
 			common.SetCookie(w, "trk", token, expires)
-			http.Redirect(w, r, "/welcome", http.StatusFound)
+			next := r.URL.Query().Get("next")
+			if next != "" {
+				http.Redirect(w, r, next, http.StatusFound)
+				return
+			}
+			http.Redirect(w, r, "/", http.StatusFound)
 			return
 		}
 		err := common.RenderTemplate(w, "login.html", nil)

@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"net/url"
+	"reflect"
 	"text/template"
 )
 
@@ -68,4 +70,32 @@ func RenderTemplate(w http.ResponseWriter, templateName string, data interface{}
 	}
 
 	return nil
+}
+
+func MapFormToStruct(values url.Values, v interface{}) error {
+	// Get the type of the struct
+	t := reflect.TypeOf(v).Elem()
+	// Get the value of the struct
+	val := reflect.ValueOf(v).Elem()
+	// Loop through the fields of the struct
+	for i := 0; i < t.NumField(); i++ {
+		// Get the field
+		field := t.Field(i)
+		// Get the tag value
+		tag := field.Tag.Get("json")
+		// Get the value from the form
+		value := values.Get(tag)
+		// Set the value of the field
+		val.Field(i).SetString(value)
+	}
+	return nil
+}
+
+func Contains(arr []string, str string) bool {
+	for _, a := range arr {
+		if a == str {
+			return true
+		}
+	}
+	return false
 }

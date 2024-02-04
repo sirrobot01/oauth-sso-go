@@ -9,7 +9,7 @@ func (db *DB) GetApps() (apps []models.App, err error) {
 	return
 }
 
-func (db *DB) GetAppById(id string) (app *models.App, err error) {
+func (db *DB) GetAppById(id int) (app *models.App, err error) {
 	err = db.Tx.First(&app, id).Error
 	return
 }
@@ -22,5 +22,10 @@ func (db *DB) GetAppByQuery(query string, args ...any) (app *models.App, err err
 
 func (db *DB) CreateApp(app *models.App) (err error) {
 	err = db.Tx.Create(&app).Error
+	return
+}
+
+func (db *DB) UpdateApp(app *models.App) (err error) {
+	err = db.Tx.Save(&app).Error
 	return
 }
